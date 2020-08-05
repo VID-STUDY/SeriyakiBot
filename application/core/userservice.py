@@ -162,7 +162,7 @@ def remove_dish_from_user_cart(user_id: int, dish_name: str, language: str) -> b
     if language == 'uz':
         dish = user.cart.filter(Dish.description_uz == dish_name).first()
     else:
-        dish = user.cart.filter(Dish.description.split('\n')[0] == dish_name.split('\n')[0]).first()
+        dish = user.cart.filter(Dish.description == dish_name).first()
     if not dish:
         return False
     user.remove_dish_from_cart(dish)
