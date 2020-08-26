@@ -16,6 +16,7 @@ class CategoryForm(FlaskForm):
                                               message='Разрешены только изображения форматов .jpg, .png')])
     parent = SelectField('Родительская категория', coerce=int)
     submit = SubmitField('Сохранить')
+
     def fill_from_object(self, category: DishCategory):
         self.name_ru.data = category.name
         self.name_uz.data = category.name_uz
@@ -76,7 +77,6 @@ class AdministratorPasswordForm(FlaskForm):
                                           validators=[EqualTo('new_password', 'Пароли должны совпадать')])
     submit = SubmitField('Изменить')
 
-
     def validate_password(self, field):
         if not current_user.check_password(field.data):
             raise ValidationError('Указан неверный пароль')
@@ -106,13 +106,13 @@ class DeliveryPriceForm(FlaskForm):
         self.others_km.data = delivery_cost[1]
         self.limit_price.data = settings.get_limit_delivery_price()
         self.currency_value.data = settings.get_currency_value()
-    
+
     def validate_first_3_km(self, field):
         self.validate_int_value(field)
-    
+
     def validate_others_km(self, field):
         self.validate_int_value(field)
-    
+
     def validate_limit_price(self, field):
         self.validate_int_value(field)
 
@@ -131,6 +131,32 @@ class CafeLocationForm(FlaskForm):
         self.longitude.data = coordinates[1]
 
 
+############TIME##############
+
+
+class TimeSet(FlaskForm):
+    start = StringField('Время от', validators=[DataRequired("Укажите начало работы")])
+    end = StringField('Время до', validators=[DataRequired('Укажите конец работы')])
+    notification = StringField('Введите текст уведомления', validators=[DataRequired("текст уведомления")])
+    submit = SubmitField('Задать')
+
+    def fill_from_settings(self):
+        times = settings.get_timelimits()
+        notify = settings.get_timenotify()
+        self.notification.data = notify
+        self.start.data = times[0]
+        self.end.data = times[1]
+
+    def validate_int_value(self, field):
+        value = field.data
+
+    def validate_start(self, field):
+        self.validate_int_value(field)
+
+    def validate_end(self, field):
+        self.validate_int_value(field)
+
+
 class UserForm(FlaskForm):
     name = StringField('Имя пользователя', validators=[DataRequired("Укажите имя пользователя")])
     phone_number = StringField('Номер телефона', validators=[DataRequired("Укажите номер телефона")])
@@ -139,3 +165,17 @@ class UserForm(FlaskForm):
     def fill_from_object(self, user: User):
         self.name.data = user.full_user_name
         self.phone_number = user.phone_number
+
+####################NOTIFICATION#######################
+
+class MailForm(FlaskForm):
+    mail = StringField('Укажите текст', validators=[DataRequired("Укажите текст")])
+    image = FileField('Изображение',
+                      validators=[FileAllowed(['png', 'jpg'],
+                                              message='Разрешены только изображения форматов .jpg, .png')])
+
+    submit = SubmitField('Разослать')
+
+
+
+

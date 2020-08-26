@@ -5,7 +5,7 @@ from application.core.orderservice import get_order_yesterday_today_statistic
 from application.core.userservice import get_bot_users_yesterday_today_statistic
 bp = Blueprint('admin', __name__)
 
-from application.admin import users, orders, orders_map, catalog, administrator, settings, comments, requests, excel
+from application.admin import users, orders, orders_map, catalog, administrator, settings, comments, requests, excel, mailing, order_time
 
 
 @bp.context_processor
@@ -24,3 +24,5 @@ def index():
                            today_orders=order_statistic[1],
                            yesterday_users=user_statistic[0],
                            today_users=user_statistic[1])
+
+

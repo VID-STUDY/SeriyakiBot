@@ -13,6 +13,8 @@ class Config:
     WEBHOOK_URL_PATH = '/%s/' % API_TOKEN
     WEBHOOK_SSL_CERT = '../certs/cert.pem'
     UPLOAD_DIRECTORY = os.path.join(basedir, 'data')
+    MAILING_DIRECTORY = os.path.join(basedir, 'data\\mailing')
+
 
     SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or 'sqlite:///' + os.path.join(basedir, 'db.sqlite3')
     SQLALCHEMY_TRACK_MODIFICATIONS = False
