@@ -21,7 +21,7 @@ def mailing():
             file.save(os.path.join(Config.MAILING_DIRECTORY, filename))
         text = mail_form.mail.data
         file_id = None
-        filepath = (Config.MAILING_DIRECTORY)
+        filepath = (Config.MAILING_DIRECTORY + file.filename)
         users = User.query.all()
         if mail_form.image.data:
             for user in users:
